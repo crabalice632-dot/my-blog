@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crab in Wonderland</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* 这里保留你原本所有的 CSS 样式 */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --cream: #FAF7F2; --ink: #1A1714; --muted: #7A746E; --accent: #C0533A; --accent-light: #F5E9E5; --sand: #EDE8DF; --teal: #2E6E65; --teal-light: #E2EFED; --border: rgba(26,23,20,0.1); }
+    body { background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.7; position: relative; }
+    header { position: sticky; top: 0; z-index: 100; background: rgba(250,247,242,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .header-inner { max-width: 900px; margin: 0 auto; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .logo-crab { font-size: 22px; }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--ink); }
+    nav { display: flex; gap: 0.25rem; }
+    nav a { font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; padding: 6px 14px; border-radius: 99px; transition: all 0.18s; }
+    nav a:hover, nav a.active { color: var(--ink); background: var(--sand); }
+    .hero { max-width: 900px; margin: 0 auto; padding: 5rem 2rem 4rem; display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center; }
+    .hero-text h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 6vw, 4.5rem); line-height: 1.1; }
+    .hero-text h1 em { font-style: italic; color: var(--accent); }
+    .hero-deco { font-size: 100px; animation: float 4s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0px) rotate(-5deg); } 50% { transform: translateY(-14px) rotate(5deg); } }
+    .main-layout { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 5rem; display: grid; grid-template-columns: 1fr 280px; gap: 4rem; }
+    .post-card { padding: 1.75rem 0; border-bottom: 1px solid var(--border); }
+    .tag { font-size: 10px; font-weight: 500; padding: 3px 10px; border-radius: 99px; text-transform: uppercase; }
+    .tag-reflection { background: var(--accent-light); color: var(--accent); }
+    .read-link { color: var(--accent); text-decoration: none; font-size: 13px; }
+    footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="javascript:void(0)" onclick="showHomePage()">
+        <span class="logo-crab">🦀</span>
+        <span class="logo-text">Crab in Wonderland</span>
+      </a>
+      <nav>
+        <a href="javascript:void(0)" onclick="showHomePage()" class="active">Home</a>
+        <a href="#journal-section" onclick="showHomePage()">Journal</a>
+        <a href="javascript:void(0)" onclick="showAboutPage()">About</a>
+        <a href="mailto:your-email@fudan.edu.cn">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div id="home-content">
+    <section class="hero">
+      <div class="hero-text">
+        <h1>A journal of <em>thoughts</em> &amp; wanderings</h1>
+        <p>No agenda, no polish. Just a curious mind putting words to the world.</p>
+      </div>
+      <div class="hero-deco">🦀</div>
+    </section>
+
+    <div class="hero-rule" style="max-width:900px; margin:0 auto; padding:0 2rem;"><hr style="border:none; border-top:1px solid var(--border);"/></div>
+
+    <div class="main-layout" id="journal-section">
+      <main>
+        <p style="text-transform:uppercase; font-size:12px; color:var(--muted); margin-bottom:2rem;">Recent posts</p>
+        <article class="post-card">
+          <span class="tag tag-reflection">Reflection</span>
+          <h2 style="font-family:'Playfair Display'; font-size:22px; margin:0.5rem 0;">Why I started writing again</h2>
+          <p style="color:var(--muted); font-size:15px;">Writing is the only way I know how to set thoughts down gently.</p>
+          <a href="javascript:void(0)" onclick="alert('详情页装修中...')" class="read-link">Read more →</a>
+        </article>
+      </main>
+
+      <aside>
+        <div style="background:white; border:1px solid var(--border); padding:1.5rem; border-radius:16px;">
+          <h3>Hello, wanderer</h3>
+          <p style="font-size:13px; color:var(--muted);">This is Crab in Wonderland — a space for honest thoughts.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <section id="about-section" style="display:none; max-width: 900px; margin: 0 auto; padding: 4rem 2rem;">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: 32px; margin-bottom: 1.5rem;">About Me</h2>
+    <div style="background: white; border: 1px solid var(--border); border-radius: 16px; padding: 2rem;">
+      <p>你好！我是来自复旦大学的一名学生。</p>
+      <p>这里是我的个人精神角落，记录着生活中的小小奇迹。</p>
+      <br>
+      <button onclick="showHomePage()" style="background: var(--sand); border: none; padding: 8px 20px; border-radius: 99px; cursor: pointer;">← 返回首页</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 <span>Crab in Wonderland</span> · Made with wonder</p>
+    <div onclick="handleAdminClick()" style="width:20px; height:20px; margin:10px auto; cursor:pointer; opacity:0.05;">.</div>
+  </footer>
+
+  <section id="admin-panel" style="display:none; max-width: 900px; margin: 2rem auto; padding: 2rem; background: #E2EFED; border-radius: 16px;">
+    <h3>Admin Console</h3>
+    <input type="text" id="post-title" placeholder="Title" style="width:100%; margin:10px 0; padding:8px;">
+    <textarea id="post-content" placeholder="Content" style="width:100%; margin:10px 0; padding:8px;"></textarea>
+    <button onclick="alert('发布功能需接入API')" style="background:var(--accent); color:white; border:none; padding:10px 20px; border-radius:8px;">Publish</button>
+  </section>
+
+  <script>
+    let clickCount = 0;
+  
+  function handleAdminClick() {
+    clickCount++;
+    console.log("点击次数:", clickCount); // 你可以按 F12 在控制台看到点击记录
+    
+    if (clickCount === 5) {
+      const pw = prompt("请输入管理员暗号：");
+      
+      if (pw === "crab") {
+        const adminPanel = document.getElementById('admin-panel');
+        if (adminPanel) {
+          // 1. 先让它显示出来
+          adminPanel.style.display = 'block';
+          
+          // 2. 强行把它移动到屏幕中间，防止你在页面顶部看不到
+          adminPanel.style.position = 'fixed';
+          adminPanel.style.top = '50%';
+          adminPanel.style.left = '50%';
+          adminPanel.style.transform = 'translate(-50%, -50%)';
+          adminPanel.style.zIndex = '9999';
+          adminPanel.style.boxShadow = '0 0 50px rgba(0,0,0,0.3)';
+          
+          alert("认证成功！管理面板已弹出。");
+        }
+      } else if (pw !== null) {
+        alert("暗号不对哦，再想想？");
+      }
+      clickCount = 0;
+    }
+  }
+
+  // 之前的页面切换逻辑保持不变
+  function showAboutPage() {
+    document.getElementById('home-content').style.display = 'none';
+    document.getElementById('about-section').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  function showHomePage() {
+    document.getElementById('home-content').style.display = 'block';
+    document.getElementById('about-section').style.display = 'none';
+  }
+  </script>
+</body>
+</html>
