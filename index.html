@@ -14,7 +14,7 @@
     .logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
     .logo-crab { font-size: 22px; }
     .logo-text { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--ink); }
-    nav { display: flex; gap: 0.25rem; }
+    nav { display: flex; gap: 0.25rem; align-items: center; }
     nav a { font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; padding: 6px 14px; border-radius: 99px; transition: all 0.18s; }
     nav a:hover, nav a.active { color: var(--ink); background: var(--sand); }
     .hero { max-width: 900px; margin: 0 auto; padding: 5rem 2rem 4rem; display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center; }
@@ -42,7 +42,7 @@
         <a href="javascript:void(0)" onclick="showHomePage()" class="active">Home</a>
         <a href="#journal-section" onclick="showHomePage()">Journal</a>
         <a href="javascript:void(0)" onclick="showAboutPage()">About</a>
-        <a href="mailto:your-email@fudan.edu.cn">Contact</a>
+        <a href="javascript:void(0)" onclick="openAdmin()" style="background: var(--accent-light); color: var(--accent); font-weight: bold;">✍️ 发布</a>
       </nav>
     </div>
   </header>
@@ -59,18 +59,13 @@
     <div class="hero-rule" style="max-width:900px; margin:0 auto; padding:0 2rem;"><hr style="border:none; border-top:1px solid var(--border);"/></div>
 
     <div class="main-layout" id="journal-section">
-      <main id="posts-container">
+      <main>
         <p style="text-transform:uppercase; font-size:12px; color:var(--muted); margin-bottom:2rem;">Recent posts</p>
-        <div class="posts-list">
-          <article class="post-card">
+        
+        <div id="posts-container">
+<article class="post-card">
             <span class="tag tag-reflection">Reflection</span>
-            <span style="font-size:12px; color:var(--muted); margin-left:10px;">April 7, 2026</span>
-            <h2 style="font-family:'Playfair Display'; font-size:22px; margin:0.5rem 0;">test</h2>
-            <p style="color:var(--muted); font-size:15px;">test</p>
-            <a href="javascript:void(0)" onclick="alert('详情页装修中...')" class="read-link">Read more →</a>
-          </article>
-          <article class="post-card">
-            <span class="tag tag-reflection">Reflection</span>
+            <span style="font-size:12px; color:var(--muted); margin-left:10px;">April 6, 2026</span>
             <h2 style="font-family:'Playfair Display'; font-size:22px; margin:0.5rem 0;">Why I started writing again</h2>
             <p style="color:var(--muted); font-size:15px;">Writing is the only way I know how to set thoughts down gently.</p>
             <a href="javascript:void(0)" onclick="alert('详情页装修中...')" class="read-link">Read more →</a>
@@ -97,11 +92,11 @@
     </div>
   </section>
 
-  <section id="admin-panel" style="display:none; width:90%; max-width:500px; background:white; padding:2rem; border-radius:16px;">
-    <h3 style="margin-bottom:1rem;">Admin Console</h3>
-    <input type="password" id="gh-token" placeholder="GitHub Token (ghp_...)" style="width:100%; margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:8px;">
-    <input type="text" id="post-title" placeholder="Title" style="width:100%; margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:8px;">
-    <textarea id="post-content" placeholder="Content" rows="5" style="width:100%; margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:8px; font-family:inherit;"></textarea>
+  <section id="admin-panel" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9999; width:90%; max-width:500px; background:white; padding:2rem; border-radius:16px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+    <h3 style="margin-bottom:1rem; font-family:'Playfair Display', serif;">✍️ 写下新想法</h3>
+    <input type="password" id="gh-token" placeholder="GitHub Token (输入一次后会自动记住)" style="width:100%; margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:8px;">
+    <input type="text" id="post-title" placeholder="文章标题" style="width:100%; margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:8px;">
+    <textarea id="post-content" placeholder="正文内容..." rows="5" style="width:100%; margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:8px; font-family:inherit;"></textarea>
     <div style="display:flex; gap:10px;">
       <button onclick="publishToGitHub()" id="publish-btn" style="flex:1; background:var(--accent); color:white; border:none; padding:12px; border-radius:8px; cursor:pointer; font-weight:bold;">正式发布</button>
       <button onclick="document.getElementById('admin-panel').style.display='none'" style="flex:1; background:#eee; border:none; padding:12px; border-radius:8px; cursor:pointer;">取消</button>
@@ -110,54 +105,53 @@
 
   <footer>
     <p>© 2026 <span>Crab in Wonderland</span> · Made with wonder</p>
-    <div onclick="handleAdminClick()" style="width:20px; height:20px; margin:10px auto; cursor:pointer; opacity:0.05;">.</div>
   </footer>
 
   <script>
-    let clickCount = 0;
-    
-    function handleAdminClick() {
-      clickCount++;
-      if (clickCount === 5) {
-        const pw = prompt("请输入管理员暗号：");
-        if (pw === "crab") {
-          const panel = document.getElementById('admin-panel');
-          panel.style.display = 'block';
-          panel.style.position = 'fixed';
-          panel.style.top = '50%';
-          panel.style.left = '50%';
-          panel.style.transform = 'translate(-50%, -50%)';
-          panel.style.zIndex = '9999';
-          panel.style.boxShadow = '0 0 50px rgba(0,0,0,0.3)';
-        }
-        clickCount = 0;
+    // 页面切换逻辑
+    function showAboutPage() {
+      document.getElementById('home-content').style.display = 'none';
+      document.getElementById('about-section').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    function showHomePage() {
+      document.getElementById('home-content').style.display = 'block';
+      document.getElementById('about-section').style.display = 'none';
+    }
+
+    // 打开发布面板
+    function openAdmin() {
+      const panel = document.getElementById('admin-panel');
+      panel.style.display = 'block';
+      // 如果之前存过 Token，自动填上
+      const savedToken = localStorage.getItem('gh_token');
+      if (savedToken) {
+        document.getElementById('gh-token').value = savedToken;
       }
     }
 
+    // 核心：发布并立刻留下痕迹
     async function publishToGitHub() {
       const token = document.getElementById('gh-token').value;
       const title = document.getElementById('post-title').value;
       const content = document.getElementById('post-content').value;
       const btn = document.getElementById('publish-btn');
 
-      if (!token || !title || !content) return alert("请填写完整信息！");
+      if (!token || !title || !content) return alert("请填写完整！");
 
-      btn.innerText = "正在发布...";
+      // 自动记住你的 Token
+      localStorage.setItem('gh_token', token);
+      
+      btn.innerText = "发布中...";
       btn.disabled = true;
 
-      // 请确保这里的信息与你的 GitHub 对应
       const owner = 'crabalice632-dot'; 
       const repo = 'my-blog'; 
       const path = 'index.html';
 
-      try {
-        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-        const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
-        const data = await res.json();
-        const oldCode = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
-
-        const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-        const newPost = `
+      const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      const newPostHtml = `
           <article class="post-card">
             <span class="tag tag-reflection">Reflection</span>
             <span style="font-size:12px; color:var(--muted); margin-left:10px;">${date}</span>
@@ -166,8 +160,19 @@
             <a href="javascript:void(0)" onclick="alert('详情页装修中...')" class="read-link">Read more →</a>
           </article>`;
 
-        // 插入到列表的最前面
-        const updatedCode = oldCode.replace('<div class="posts-list">', '<div class="posts-list">' + newPost);
+      try {
+        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+        const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+        const data = await res.json();
+        const oldCode = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
+
+        const anchor = "";
+        if (!oldCode.includes(anchor)) {
+            throw new Error("找不到文章插入锚点，请检查 HTML 代码！");
+        }
+
+        // 精准插入新文章
+        const updatedCode = oldCode.replace(anchor, anchor + "\n" + newPostHtml);
 
         const putRes = await fetch(url, {
           method: 'PUT',
@@ -180,10 +185,15 @@
         });
 
         if (putRes.ok) {
-          alert("发布成功！页面即将刷新。");
-          location.reload();
+          // 这一步最关键：立刻在网页上显示出来（留下痕迹），无需等待 Vercel 刷新！
+          document.getElementById('posts-container').insertAdjacentHTML('beforeend', newPostHtml);
+          
+          alert("✅ 发布成功！你的文章已立刻显示，并会在后台永久保存到云端。");
+          document.getElementById('admin-panel').style.display = 'none';
+          document.getElementById('post-title').value = '';
+          document.getElementById('post-content').value = '';
         } else {
-          alert("发布失败，请检查 Token 权限或网络。");
+          alert("❌ 发布失败，可能是 Token 权限不对。");
         }
       } catch (e) {
         alert("发生错误: " + e.message);
@@ -191,17 +201,6 @@
         btn.innerText = "正式发布";
         btn.disabled = false;
       }
-    }
-
-    function showAboutPage() {
-      document.getElementById('home-content').style.display = 'none';
-      document.getElementById('about-section').style.display = 'block';
-      window.scrollTo(0, 0);
-    }
-
-    function showHomePage() {
-      document.getElementById('home-content').style.display = 'block';
-      document.getElementById('about-section').style.display = 'none';
     }
   </script>
 </body>
