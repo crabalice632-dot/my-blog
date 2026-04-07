@@ -1,12 +1,4 @@
-
-
-          <article class="post-card" id="post-1775557403947">
-            <span class="tag tag-reflection">Reflection</span>
-            <span style="font-size:12px; color:var(--muted); margin-left:10px;">April 7, 2026</span>
-            <h2 style="font-family:'Playfair Display'; font-size:22px; margin:0.5rem 0;">test</h2>
-            <div class="post-content-text" style="display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">111</div>
-            <a onclick="readPost(this)" class="read-link">Read more →</a>
-          </article><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -51,7 +43,7 @@
         <a href="javascript:void(0)" onclick="showHomePage()" class="active">Home</a>
         <a href="javascript:void(0)" onclick="showHomePage()">Journal</a>
         <a href="javascript:void(0)" onclick="showAboutPage()">About</a>
-        <a href="mailto:your-email@fudan.edu.cn">Contact</a>
+        <a href="mailto:13013880668@163.com">Contact</a>
         <a href="javascript:void(0)" onclick="openAdmin()" style="background: var(--accent-light); color: var(--accent); font-weight: bold; margin-left: 10px;">✍️ 发布</a>
       </nav>
     </div>
@@ -75,7 +67,7 @@
         <div id="posts-container">
 <article class="post-card" id="post-initial-1">
             <span class="tag tag-reflection">Reflection</span>
-            <span style="font-size:12px; color:var(--muted); margin-left:10px;">April 6, 2026</span>
+            <span style="font-size:12px; color:var(--muted); margin-left:10px;">April 7, 2026</span>
             <h2 style="font-family:'Playfair Display'; font-size:22px; margin:0.5rem 0;">Why I started writing again</h2>
             <div class="post-content-text" style="display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">Writing is the only way I know how to set thoughts down gently. Sometimes they feel too heavy to carry in your head alone.</div>
             <a onclick="readPost(this)" class="read-link">Read more →</a>
@@ -131,14 +123,11 @@
   </footer>
 
   <script>
-    // GitHub 配置信息（确认是你的仓库）
     const OWNER = 'crabalice632-dot'; 
     const REPO = 'my-blog'; 
     const PATH = 'index.html';
-    
-    let currentReadPostId = null; // 记录当前正在阅读的文章身份证号
+    let currentReadPostId = null; 
 
-    // 页面切换
     function showHomePage() {
       document.getElementById('home-content').style.display = 'block';
       document.getElementById('about-section').style.display = 'none';
@@ -153,10 +142,9 @@
       window.scrollTo(0, 0);
     }
 
-    // 打开阅读页面
     function readPost(btnElement) {
       const article = btnElement.closest('article');
-      currentReadPostId = article.id; // 获取这篇特定的文章ID
+      currentReadPostId = article.id; 
       
       const tag = article.querySelector('.tag').innerText;
       const date = article.querySelectorAll('span')[1].innerText;
@@ -173,7 +161,6 @@
       window.scrollTo(0, 0);
     }
 
-    // 打开发布面板
     function openAdmin() {
       const panel = document.getElementById('admin-panel');
       panel.style.display = 'block';
@@ -181,7 +168,6 @@
       if (savedToken) document.getElementById('gh-token').value = savedToken;
     }
 
-    // 核心发布功能
     async function publishToGitHub() {
       const token = document.getElementById('gh-token').value;
       const title = document.getElementById('post-title').value;
@@ -195,7 +181,7 @@
       btn.disabled = true;
 
       const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-      const uniqueId = 'post-' + Date.now(); // 赋予唯一身份证号
+      const uniqueId = 'post-' + Date.now(); 
       
       const newPostHtml = `
           <article class="post-card" id="${uniqueId}">
@@ -228,7 +214,6 @@
         });
 
         if (putRes.ok) {
-          // 在本地立刻渲染
           document.getElementById('posts-container').insertAdjacentHTML('afterbegin', newPostHtml);
           alert("✅ 发布成功！");
           document.getElementById('admin-panel').style.display = 'none';
@@ -245,14 +230,10 @@
       }
     }
 
-    // 核心删除功能
     async function deleteCurrentPost() {
       if (!currentReadPostId) return;
-
-      // 再次确认防止手滑
       if (!confirm("确定要永久删除这篇文章吗？（操作不可逆）")) return;
 
-      // 验证 Token
       let token = localStorage.getItem('gh_token');
       if (!token) {
           token = prompt("请输入 GitHub Token 以确认权限：");
@@ -272,21 +253,16 @@
         const data = await res.json();
         const oldCode = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
 
-        // 根据身份证号寻找目标文章的开头和结尾
         const startTag = `<article class="post-card" id="${currentReadPostId}">`;
         const startIndex = oldCode.indexOf(startTag);
         
-        if (startIndex === -1) {
-            throw new Error("云端找不到此文章，可能已经被删除了。");
-        }
+        if (startIndex === -1) throw new Error("云端找不到此文章，可能已经被删除了。");
 
         const endTag = `</article>`;
         const endIndex = oldCode.indexOf(endTag, startIndex);
         if (endIndex === -1) throw new Error("文章结构异常。");
 
         const finalEndIndex = endIndex + endTag.length;
-        
-        // 像做手术一样把这篇文章的代码切掉
         const updatedCode = oldCode.substring(0, startIndex) + oldCode.substring(finalEndIndex);
 
         const putRes = await fetch(url, {
@@ -300,12 +276,10 @@
         });
 
         if (putRes.ok) {
-          // 立刻在本地网页中干掉它
           const elementToRemove = document.getElementById(currentReadPostId);
           if (elementToRemove) elementToRemove.remove();
-
           alert("🗑️ 文章已成功删除！");
-          showHomePage(); // 删完自动退回首页
+          showHomePage(); 
         } else {
           alert("❌ 删除失败，可能是 Token 失效。");
         }
