@@ -6,7 +6,6 @@
   <title>Crab in Wonderland</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    /* 这里保留你原本所有的 CSS 样式 */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --cream: #FAF7F2; --ink: #1A1714; --muted: #7A746E; --accent: #C0533A; --accent-light: #F5E9E5; --sand: #EDE8DF; --teal: #2E6E65; --teal-light: #E2EFED; --border: rgba(26,23,20,0.1); }
     body { background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.7; position: relative; }
@@ -60,14 +59,16 @@
     <div class="hero-rule" style="max-width:900px; margin:0 auto; padding:0 2rem;"><hr style="border:none; border-top:1px solid var(--border);"/></div>
 
     <div class="main-layout" id="journal-section">
-      <main>
+      <main id="posts-container">
         <p style="text-transform:uppercase; font-size:12px; color:var(--muted); margin-bottom:2rem;">Recent posts</p>
-        <article class="post-card">
-          <span class="tag tag-reflection">Reflection</span>
-          <h2 style="font-family:'Playfair Display'; font-size:22px; margin:0.5rem 0;">Why I started writing again</h2>
-          <p style="color:var(--muted); font-size:15px;">Writing is the only way I know how to set thoughts down gently.</p>
-          <a href="javascript:void(0)" onclick="alert('详情页装修中...')" class="read-link">Read more →</a>
-        </article>
+        <div class="posts-list">
+          <article class="post-card">
+            <span class="tag tag-reflection">Reflection</span>
+            <h2 style="font-family:'Playfair Display'; font-size:22px; margin:0.5rem 0;">Why I started writing again</h2>
+            <p style="color:var(--muted); font-size:15px;">Writing is the only way I know how to set thoughts down gently.</p>
+            <a href="javascript:void(0)" onclick="alert('详情页装修中...')" class="read-link">Read more →</a>
+          </article>
+        </div>
       </main>
 
       <aside>
@@ -89,62 +90,112 @@
     </div>
   </section>
 
+  <section id="admin-panel" style="display:none; width:90%; max-width:500px; background:white; padding:2rem; border-radius:16px;">
+    <h3 style="margin-bottom:1rem;">Admin Console</h3>
+    <input type="password" id="gh-token" placeholder="GitHub Token (ghp_...)" style="width:100%; margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:8px;">
+    <input type="text" id="post-title" placeholder="Title" style="width:100%; margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:8px;">
+    <textarea id="post-content" placeholder="Content" rows="5" style="width:100%; margin-bottom:10px; padding:10px; border:1px solid #ccc; border-radius:8px; font-family:inherit;"></textarea>
+    <div style="display:flex; gap:10px;">
+      <button onclick="publishToGitHub()" id="publish-btn" style="flex:1; background:var(--accent); color:white; border:none; padding:12px; border-radius:8px; cursor:pointer; font-weight:bold;">正式发布</button>
+      <button onclick="document.getElementById('admin-panel').style.display='none'" style="flex:1; background:#eee; border:none; padding:12px; border-radius:8px; cursor:pointer;">取消</button>
+    </div>
+  </section>
+
   <footer>
     <p>© 2026 <span>Crab in Wonderland</span> · Made with wonder</p>
     <div onclick="handleAdminClick()" style="width:20px; height:20px; margin:10px auto; cursor:pointer; opacity:0.05;">.</div>
   </footer>
 
-  <section id="admin-panel" style="display:none; max-width: 900px; margin: 2rem auto; padding: 2rem; background: #E2EFED; border-radius: 16px;">
-    <h3>Admin Console</h3>
-    <input type="text" id="post-title" placeholder="Title" style="width:100%; margin:10px 0; padding:8px;">
-    <textarea id="post-content" placeholder="Content" style="width:100%; margin:10px 0; padding:8px;"></textarea>
-    <button onclick="alert('发布功能需接入API')" style="background:var(--accent); color:white; border:none; padding:10px 20px; border-radius:8px;">Publish</button>
-  </section>
-
   <script>
     let clickCount = 0;
-  
-  function handleAdminClick() {
-    clickCount++;
-    console.log("点击次数:", clickCount); // 你可以按 F12 在控制台看到点击记录
     
-    if (clickCount === 5) {
-      const pw = prompt("请输入管理员暗号：");
-      
-      if (pw === "crab") {
-        const adminPanel = document.getElementById('admin-panel');
-        if (adminPanel) {
-          // 1. 先让它显示出来
-          adminPanel.style.display = 'block';
-          
-          // 2. 强行把它移动到屏幕中间，防止你在页面顶部看不到
-          adminPanel.style.position = 'fixed';
-          adminPanel.style.top = '50%';
-          adminPanel.style.left = '50%';
-          adminPanel.style.transform = 'translate(-50%, -50%)';
-          adminPanel.style.zIndex = '9999';
-          adminPanel.style.boxShadow = '0 0 50px rgba(0,0,0,0.3)';
-          
-          alert("认证成功！管理面板已弹出。");
+    function handleAdminClick() {
+      clickCount++;
+      if (clickCount === 5) {
+        const pw = prompt("请输入管理员暗号：");
+        if (pw === "crab") {
+          const panel = document.getElementById('admin-panel');
+          panel.style.display = 'block';
+          panel.style.position = 'fixed';
+          panel.style.top = '50%';
+          panel.style.left = '50%';
+          panel.style.transform = 'translate(-50%, -50%)';
+          panel.style.zIndex = '9999';
+          panel.style.boxShadow = '0 0 50px rgba(0,0,0,0.3)';
         }
-      } else if (pw !== null) {
-        alert("暗号不对哦，再想想？");
+        clickCount = 0;
       }
-      clickCount = 0;
     }
-  }
 
-  // 之前的页面切换逻辑保持不变
-  function showAboutPage() {
-    document.getElementById('home-content').style.display = 'none';
-    document.getElementById('about-section').style.display = 'block';
-    window.scrollTo(0, 0);
-  }
+    async function publishToGitHub() {
+      const token = document.getElementById('gh-token').value;
+      const title = document.getElementById('post-title').value;
+      const content = document.getElementById('post-content').value;
+      const btn = document.getElementById('publish-btn');
 
-  function showHomePage() {
-    document.getElementById('home-content').style.display = 'block';
-    document.getElementById('about-section').style.display = 'none';
-  }
+      if (!token || !title || !content) return alert("请填写完整信息！");
+
+      btn.innerText = "正在发布...";
+      btn.disabled = true;
+
+      // 请确保这里的信息与你的 GitHub 对应
+      const owner = 'crabalice632-dot'; 
+      const repo = 'my-blog'; 
+      const path = 'index.html';
+
+      try {
+        const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+        const res = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
+        const data = await res.json();
+        const oldCode = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
+
+        const date = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const newPost = `
+          <article class="post-card">
+            <span class="tag tag-reflection">Reflection</span>
+            <span style="font-size:12px; color:var(--muted); margin-left:10px;">${date}</span>
+            <h2 style="font-family:'Playfair Display'; font-size:22px; margin:0.5rem 0;">${title}</h2>
+            <p style="color:var(--muted); font-size:15px;">${content}</p>
+            <a href="javascript:void(0)" onclick="alert('详情页装修中...')" class="read-link">Read more →</a>
+          </article>`;
+
+        // 插入到列表的最前面
+        const updatedCode = oldCode.replace('<div class="posts-list">', '<div class="posts-list">' + newPost);
+
+        const putRes = await fetch(url, {
+          method: 'PUT',
+          headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: `New post: ${title}`,
+            content: btoa(unescape(encodeURIComponent(updatedCode))),
+            sha: data.sha
+          })
+        });
+
+        if (putRes.ok) {
+          alert("发布成功！页面即将刷新。");
+          location.reload();
+        } else {
+          alert("发布失败，请检查 Token 权限或网络。");
+        }
+      } catch (e) {
+        alert("发生错误: " + e.message);
+      } finally {
+        btn.innerText = "正式发布";
+        btn.disabled = false;
+      }
+    }
+
+    function showAboutPage() {
+      document.getElementById('home-content').style.display = 'none';
+      document.getElementById('about-section').style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    function showHomePage() {
+      document.getElementById('home-content').style.display = 'block';
+      document.getElementById('about-section').style.display = 'none';
+    }
   </script>
 </body>
 </html>
